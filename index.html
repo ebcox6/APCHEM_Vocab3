@@ -85,23 +85,28 @@
         const definitionsContainer = document.getElementById('definitions');
         const matchResult = document.getElementById('matchResult');
 
-        // Shuffle the vocabulary array for definitions
+        // Shuffle the vocabulary array for terms and definitions
         function shuffle(array) {
             return array.sort(() => Math.random() - 0.5);
         }
 
         // Initialize terms and definitions on the page
         function initializeGame() {
-            shuffle(vocabulary).forEach((item, index) => {
+            const shuffledVocabulary = shuffle([...vocabulary]);
+            const shuffledDefinitions = shuffle([...vocabulary]);
+
+            shuffledVocabulary.forEach((item, index) => {
                 const termDiv = document.createElement('div');
                 termDiv.innerText = item.term;
                 termDiv.dataset.index = index;
                 termDiv.onclick = () => selectTerm(termDiv);
                 termsContainer.appendChild(termDiv);
+            });
 
+            shuffledDefinitions.forEach((item, index) => {
                 const definitionDiv = document.createElement('div');
                 definitionDiv.innerText = item.definition;
-                definitionDiv.dataset.index = index;
+                definitionDiv.dataset.index = item.term;
                 definitionDiv.onclick = () => selectDefinition(definitionDiv);
                 definitionsContainer.appendChild(definitionDiv);
             });
@@ -130,7 +135,7 @@
         // Check if the selected term and definition match
         function checkMatch() {
             if (selectedTerm && selectedDefinition) {
-                if (selectedTerm.dataset.index === selectedDefinition.dataset.index) {
+                if (selectedTerm.innerText === selectedDefinition.dataset.index) {
                     matchResult.innerText = "Correct Match!";
                     selectedTerm.style.backgroundColor = "#a6e3a6";
                     selectedDefinition.style.backgroundColor = "#a6e3a6";
@@ -149,4 +154,5 @@
     </script>
 </body>
 </html>
+
 
