@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Chemistry Vocabulary Matching Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .terms, .definitions {
+            width: 45%;
+        }
+        .terms div, .definitions div {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .match-result {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>AP Chemistry Unit 3 Vocabulary Matching Game</h2>
+    <p>Click on a term and then click on its corresponding definition to make a match.</p>
+    <div class="container">
+        <div class="terms" id="terms">
+            <!-- Terms will be inserted here -->
+        </div>
+        <div class="definitions" id="definitions">
+            <!-- Definitions will be inserted here -->
+        </div>
+    </div>
+    <div class="match-result" id="matchResult"></div>
+    <script>
+        const vocabulary = [
+            { term: "Intermolecular Forces", definition: "Forces that exist between molecules and influence the physical properties of substances." },
+            { term: "London Dispersion Forces", definition: "Weak intermolecular forces arising from temporary dipoles induced in atoms or molecules." },
+            { term: "Dipole-Dipole Interaction", definition: "Attractive forces between the positive end of one polar molecule and the negative end of another." },
+            { term: "Hydrogen Bonding", definition: "A strong type of dipole-dipole attraction involving hydrogen bonded to highly electronegative atoms (N, O, F)." }
+            // Add more terms and definitions as needed
+        ];
+
+        let selectedTerm = null;
+        let selectedDefinition = null;
+
+        const termsContainer = document.getElementById('terms');
+        const definitionsContainer = document.getElementById('definitions');
+        const matchResult = document.getElementById('matchResult');
+
+        // Shuffle the vocabulary array for definitions
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        // Initialize terms and definitions on the page
+        function initializeGame() {
+            shuffle(vocabulary).forEach((item, index) => {
+                const termDiv = document.createElement('div');
+                termDiv.innerText = item.term;
+                termDiv.dataset.index = index;
+                termDiv.onclick = () => selectTerm(termDiv);
+                termsContainer.appendChild(termDiv);
+
+                const definitionDiv = document.createElement('div');
+                definitionDiv.innerText = item.definition;
+                definitionDiv.dataset.index = index;
+                definitionDiv.onclick = () => selectDefinition(definitionDiv);
+                definitionsContainer.appendChild(definitionDiv);
+            });
+        }
+
+        // Select term
+        function selectTerm(termDiv) {
+            if (selectedTerm) {
+                selectedTerm.style.backgroundColor = "#f0f0f0";
+            }
+            selectedTerm = termDiv;
+            termDiv.style.backgroundColor = "#d3d3ff";
+            checkMatch();
+        }
+
+        // Select definition
+        function selectDefinition(definitionDiv) {
+            if (selectedDefinition) {
+                selectedDefinition.style.backgroundColor = "#f0f0f0";
+            }
+            selectedDefinition = definitionDiv;
+            definitionDiv.style.backgroundColor = "#d3d3ff";
+            checkMatch();
+        }
+
+        // Check if the selected term and definition match
+        function checkMatch() {
+            if (selectedTerm && selectedDefinition) {
+                if (selectedTerm.dataset.index === selectedDefinition.dataset.index) {
+                    matchResult.innerText = "Correct Match!";
+                    selectedTerm.style.backgroundColor = "#a6e3a6";
+                    selectedDefinition.style.backgroundColor = "#a6e3a6";
+                    selectedTerm.onclick = null;
+                    selectedDefinition.onclick = null;
+                    selectedTerm = null;
+                    selectedDefinition = null;
+                } else {
+                    matchResult.innerText = "Incorrect Match. Try Again!";
+                }
+            }
+        }
+
+        // Start the game
+        initializeGame();
+    </script>
+</body>
+</html>
